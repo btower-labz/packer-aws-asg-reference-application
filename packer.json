@@ -1,7 +1,8 @@
 {
     "variables": {
       "packer_profile": "{{env `PACKER_PROFILE`}}",
-      "packer_region": "{{env `PACKER_REGION`}}",
+      "packer_dst_regions": "{{env `PACKER_DST_REGIONS`}}",
+      "packer_dst_accounts": "{{env `PACKER_DST_ACCOUNTS`}}",
       "packer_vpc_id": "{{env `PACKER_VPC_ID`}}",
       "packer_subner_id": "{{env `PACKER_SUBNET_ID`}}",
       "packer_build_start": "{{isotime `2006-01-02T15:04:05`}}"
@@ -9,7 +10,6 @@
     "builders": [    {
       "type": "amazon-ebs",
       "profile": "{{user `packer_profile`}}",
-      "region": "{{user `packer_region`}}",
       "vpc_id": "{{user `packer_vpc_id`}}",
       "subnet_id": "{{user `packer_subner_id`}}",
       "source_ami_filter": {
@@ -20,6 +20,8 @@
         "owners": ["self"],
         "most_recent": true
       },
+      "ami_users": "{{user `packer_dst_accounts`}}",
+      "ami_regions": "{{user `packer_dst_regions`}}",
       "instance_type": "t2.small",
       "enable_t2_unlimited": true,
       "force_deregister": false,

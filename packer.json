@@ -107,6 +107,12 @@
       "direction" : "upload"
     },
     {
+      "type": "file",
+      "source": "{{template_dir}}/files/provision-application.sh",
+      "destination" : "/tmp/provision/provision-application.sh",
+      "direction" : "upload"
+    },
+    {
       "type": "shell",
       "expect_disconnect": true,
       "inline": [
@@ -114,6 +120,7 @@
         "ls -la /tmp/provision",
         "sudo -i /tmp/provision/provision-generic.sh",
         "sudo -i /tmp/provision/provision-code-deploy.sh",
+        "sudo -i /tmp/provision/provision-application.sh",
         "sudo shutdown -r now",
         "while true; do sleep 100; echo ...; done;"
       ]
@@ -136,7 +143,8 @@
       "inline": [
         "chmod +x /tmp/provision/*.sh",
         "ls -la /tmp/provision",
-        "/tmp/provision/sanity-test.sh"
+        "/tmp/provision/sanity-test.sh",
+        "rm -rf /tmp/provision"
       ]
     }
    ],

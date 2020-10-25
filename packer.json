@@ -4,18 +4,19 @@
       "packer_dst_regions": "{{env `PACKER_DST_REGIONS`}}",
       "packer_dst_accounts": "{{env `PACKER_DST_ACCOUNTS`}}",
       "packer_vpc_id": "{{env `PACKER_VPC_ID`}}",
-      "packer_subner_id": "{{env `PACKER_SUBNET_ID`}}",
+      "packer_subnet_id": "{{env `PACKER_SUBNET_ID`}}",
       "packer_build_start": "{{isotime `2006-01-02T15:04:05`}}"
     },
     "builders": [    {
       "type": "amazon-ebs",
       "profile": "{{user `packer_profile`}}",
       "vpc_id": "{{user `packer_vpc_id`}}",
-      "subnet_id": "{{user `packer_subner_id`}}",
+      "subnet_id": "{{user `packer_subnet_id`}}",
       "source_ami_filter": {
         "filters": {
-          "name": "aws-ec2-reference-middleware-*",
-          "virtualization-type": "hvm"
+          "name": "aws-asg-reference-middleware-*",
+          "virtualization-type": "hvm",
+          "state": "available"
         },
         "owners": ["self"],
         "most_recent": true
@@ -30,10 +31,10 @@
       "ssh_timeout": "10m",
       "ssh_pty": true,
       "associate_public_ip_address": true,
-      "ami_name": "aws-ec2-reference-application-{{isotime \"2006-01-02-15-04-05\"}}",
-      "ami_description": "AWS EC2 Reference Application Image",
+      "ami_name": "aws-asg-reference-application-{{isotime \"2006-01-02-15-04-05\"}}",
+      "ami_description": "AWS ASG Reference Application Image",
       "run_tags": {
-        "Name": "Packer: aws-ec2-reference-application",
+        "Name": "Packer: aws-asg-reference-application",
         "Environment": "Dev",
         "Workload": "CI\\CD",
         "PackerBuildName": "{{build_name}}",
@@ -41,9 +42,9 @@
         "PackerVersion": "{{packer_version}}"
       },
       "tags": {
-        "Name": "aws-ec2-reference-application-{{user `packer_build_start` | clean_resource_name }}",
-        "Family": "aws-ec2-reference-application",
-        "Project": "aws-ec2-reference",
+        "Name": "aws-asg-reference-application-{{user `packer_build_start` | clean_resource_name }}",
+        "Family": "aws-asg-reference-application",
+        "Project": "aws-asg-reference",
         "PackerBuildName": "{{build_name}}",
         "PackerBuildType": "{{build_type}}",
         "PackerVersion": "{{packer_version}}"

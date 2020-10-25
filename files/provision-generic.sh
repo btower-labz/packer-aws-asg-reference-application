@@ -17,6 +17,6 @@ log 'Started ...'
 
 # See: https://aws.amazon.com/premiumsupport/knowledge-center/ec2-install-extras-library-software/
 yum install -y amazon-linux-extras
-yum -y clean metadata && yum --assumeyes install unzip curl wget
+yum -y clean metadata && yum --assumeyes install unzip curl wget git
 
 log 'Finished ...'

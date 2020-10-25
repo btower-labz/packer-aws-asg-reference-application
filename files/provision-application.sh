@@ -15,30 +15,23 @@ function log {
 
 log 'Started ...'
 
-export APP_URL=https://tomcat.apache.org/tomcat-7.0-doc/appdev/sample/sample.war
-export APP_SRC=/usr/local/src/application
-export APP_DST=/opt/wildfly/standalone/deployments
+export APP_BASE=/usr/local/src
+export APP_DIR=django-dashboard-black
+export APP_SRC=${APP_BASE}/${APP_DIR}
+export APP_VERSION=feature/decoupling
+export APP_REPO=https://github.com/btower-labz/django-dashboard-black.git
 
 log 'Variables configured ...'
 
-mkdir -p ${APP_SRC}
-curl --silent --location -o ${APP_SRC}/sample.war ${APP_URL}
-ls -la ${APP_SRC}/sample.war
+mkdir -p ${APP_BASE}
+git clone ${APP_REPO} ${APP_SRC}
+cd ${APP_SRC}
+git checkout ${APP_VERSION}
 
 log 'Application downloaded ...'
 
-# TODO: validate\checksum archive
-
-cp ${APP_SRC}/sample.war ${APP_DST}/service1.war
-cp ${APP_SRC}/sample.war ${APP_DST}/service2.war
-cp ${APP_SRC}/sample.war ${APP_DST}/service3.war
-ls -la ${APP_DST}
-
-log 'Application installed ...'
-
-cd /tmp
-rm -rf ${APP_SRC}
-
-# TODO: validate packages with wildfly
-
+touch .env
+docker-compose -f docker-compose-cloud.yml config
+docker-compose -f docker-compose-cloud.yml pull
+docker-compose -f docker-compose-cloud.yml build
 log 'Finished ...'
